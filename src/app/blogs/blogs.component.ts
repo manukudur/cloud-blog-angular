@@ -13,8 +13,8 @@ import { MatSnackBar } from "@angular/material/snack-bar";
   styleUrls: ["./blogs.component.css"]
 })
 export class BlogsComponent implements OnInit {
-  loading: boolean = false;
-  blogs: Blog[];
+  initialLoading: boolean = false;
+  blogs: Blog[] = [];
   constructor(
     public dialog: MatDialog,
     public blogService: BlogService,
@@ -27,16 +27,18 @@ export class BlogsComponent implements OnInit {
   loadBlogs() {
     this.blogService.getBlogs().subscribe(data => {
       this.blogs = data;
-      this.loading = true;
+      this.initialLoading = true;
     });
   }
   deleteBlog(blog: Blog) {
-    this.blogService.deleteBlogs(blog._id).subscribe(data => {
-      this._snackBar.open("Blog " + data.message + " successfully", "", {
-        duration: 2000
+    if (confirm("Are you sure to Delete this Blog ?")) {
+      this.blogService.deleteBlogs(blog._id).subscribe(data => {
+        this._snackBar.open("Blog " + data.message + " successfully", "", {
+          duration: 2000
+        });
+        this.loadBlogs();
       });
-      this.loadBlogs();
-    });
+    }
   }
   blogDialog(createBlog: MatButton, buttonType?: string, blog?: Blog): void {
     createBlog.disabled = true;

@@ -11,7 +11,7 @@
     <i class="material-icons">add</i>
   </button>
 </div>
-<div style="text-align: center" *ngIf="!loading">
+<div style="text-align: center" *ngIf="!initialLoading">
   <mat-spinner style="margin: 200px auto"></mat-spinner>
 </div>
 <div
@@ -53,4 +53,9 @@
       </div>
     </mat-card-actions>
   </mat-card>
+</div>
+<div *ngIf="blogs.length === 0" style="text-align: center">
+  <h1>
+    Create your own Blog here.
+  </h1>
 </div>
