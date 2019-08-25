@@ -1,0 +1,14 @@
+.blogForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.blogForm > * {
+  width: 100%;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+button {
+  margin-left: 5px;
+}
