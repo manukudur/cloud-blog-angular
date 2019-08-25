@@ -50,10 +50,12 @@ export class BlogsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(received => {
       createBlog.disabled = false;
-      this._snackBar.open("Blog " + received.message + " successfully", "", {
-        duration: 2000
-      });
-      this.loadBlogs();
+      if (received) {
+        this._snackBar.open("Blog " + received.message + " successfully", "", {
+          duration: 2000
+        });
+        this.loadBlogs();
+      }
     });
   }
 }

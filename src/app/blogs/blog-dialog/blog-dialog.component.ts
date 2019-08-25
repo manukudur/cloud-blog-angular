@@ -49,4 +49,7 @@ export class BlogDialogComponent implements OnInit {
   onNoClick(data: { message: string }): void {
     this.dialogRef.close(data);
   }
+  onCancleClick(): void {
+    this.dialogRef.close();
+  }
 }
