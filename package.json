@@ -46,5 +46,10 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3"
-  }
+  },
+  "description": "Pepper Cloud Blog front-end app using Angular",
+  "main": "src/main.ts",
+  "repository": "https://github.com/manukudur/pepper-cloud-blog.git",
+  "author": "Manoj Kumar <44832007+manukudur@users.noreply.github.com>",
+  "license": "MIT"
 }
