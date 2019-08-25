@@ -24,13 +24,13 @@ export class BlogDialogComponent implements OnInit {
         _id: new FormControl(this.data.blog._id),
         title: new FormControl(this.data.blog.title, Validators.required),
         desc: new FormControl(this.data.blog.desc, Validators.required),
-        imageUrl: new FormControl(this.data.blog.imageUrl, Validators.required)
+        imageUrl: new FormControl(this.data.blog.imageUrl)
       });
     } else {
       this.form = new FormGroup({
         title: new FormControl(null, Validators.required),
         desc: new FormControl(null, Validators.required),
-        imageUrl: new FormControl(null, Validators.required)
+        imageUrl: new FormControl(null)
       });
     }
   }
