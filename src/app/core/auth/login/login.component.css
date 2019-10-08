@@ -1,0 +1,31 @@
+.login {
+  margin: auto;
+  width: 40%;
+  /* position: fixed;
+  left: 50%;
+  transform: translateX(-50%); */
+}
+.center {
+  text-align: center;
+}
+mat-card {
+  background-color: rgba(255, 255, 255, 0.925);
+}
+.form-field {
+  width: 90%;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.submit-btn {
+  margin-top: 20px;
+}
+@media screen and (max-width: 801px) {
+  .login {
+    width: 90%;
+    margin: auto;
+  }
+}

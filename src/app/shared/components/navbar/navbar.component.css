@@ -1,0 +1,21 @@
+mat-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background-color: rgba(255, 255, 255, 0.925);
+}
+button {
+  margin: 5px;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+.create {
+  background-color: rgb(45, 250, 45);
+  color: white;
+}

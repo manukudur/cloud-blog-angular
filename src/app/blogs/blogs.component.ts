@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { MatButton } from "@angular/material/button";
-
-import { BlogDialogComponent } from "./blog-dialog/blog-dialog.component";
-import { Blog } from "../models/blog.model";
-import { BlogService } from "../blog.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import * as moment from "moment";
+
+import { BlogDialogComponent } from "../shared/components/blog-dialog/blog-dialog.component";
+import { Blog } from "../shared/models/blog.model";
+import { BlogService } from "../core/services/blog.service";
 
 @Component({
   selector: "app-blogs",
@@ -15,12 +15,12 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 export class BlogsComponent implements OnInit {
   initialLoading: boolean = false;
   blogs: Blog[] = [];
+
   constructor(
     public dialog: MatDialog,
     public blogService: BlogService,
     private _snackBar: MatSnackBar
   ) {}
-
   ngOnInit() {
     this.loadBlogs();
   }
@@ -29,6 +29,9 @@ export class BlogsComponent implements OnInit {
       this.blogs = data;
       this.initialLoading = true;
     });
+  }
+  formatTime(time: Date) {
+    return moment(time).fromNow();
   }
   deleteBlog(blog: Blog) {
     if (confirm("Are you sure to Delete this Blog ?")) {
@@ -40,16 +43,13 @@ export class BlogsComponent implements OnInit {
       });
     }
   }
-  blogDialog(createBlog: MatButton, buttonType?: string, blog?: Blog): void {
-    createBlog.disabled = true;
+  editBlogDialog(blog: Blog): void {
     const dialogRef = this.dialog.open(BlogDialogComponent, {
-      width: "450px",
-      height: "450px",
-      data: { dialogType: buttonType, blog: blog }
+      width: "500px",
+      data: { dialogType: "Edit", blog: blog }
     });
 
     dialogRef.afterClosed().subscribe(received => {
-      createBlog.disabled = false;
       if (received) {
         this._snackBar.open("Blog " + received.message + " successfully", "", {
           duration: 2000

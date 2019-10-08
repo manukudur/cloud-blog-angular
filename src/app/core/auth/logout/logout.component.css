@@ -1,0 +1,20 @@
+.logout {
+  margin: auto;
+  width: 40%;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+mat-card {
+  text-align: center;
+  background-color: rgba(185, 255, 179, 0.925);
+}
+@media screen and (max-width: 801px) {
+  .logout {
+    width: 90%;
+    margin: auto;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

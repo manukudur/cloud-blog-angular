@@ -1,0 +1,11 @@
+.success {
+  text-align: center;
+}
+mat-icon {
+  color: green;
+  transform: scale(3);
+  margin: 20px;
+}
+h1 {
+  margin: 20px auto;
+}

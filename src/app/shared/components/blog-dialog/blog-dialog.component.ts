@@ -2,8 +2,8 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
-import { Blog } from "src/app/models/blog.model";
-import { BlogService } from "src/app/blog.service";
+import { Blog } from "src/app/shared/models/blog.model";
+import { BlogService } from "src/app/core/services/blog.service";
 
 @Component({
   selector: "app-blog-dialog",
@@ -24,19 +24,19 @@ export class BlogDialogComponent implements OnInit {
         _id: new FormControl(this.data.blog._id),
         title: new FormControl(this.data.blog.title, Validators.required),
         desc: new FormControl(this.data.blog.desc, Validators.required),
-        imageUrl: new FormControl(this.data.blog.imageUrl)
+        image_url: new FormControl(this.data.blog.image_url)
       });
     } else {
       this.form = new FormGroup({
         title: new FormControl(null, Validators.required),
         desc: new FormControl(null, Validators.required),
-        imageUrl: new FormControl(null)
+        image_url: new FormControl(null)
       });
     }
   }
   submitBlogForm() {
     this.loading = false;
-    if (this.data.blog) {
+    if (this.data.dialogType === "Edit") {
       this.blogService.updateBlog(this.form.value).subscribe(received => {
         this.onNoClick(received);
       });

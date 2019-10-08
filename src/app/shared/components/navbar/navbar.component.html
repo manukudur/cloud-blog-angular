@@ -1,0 +1,20 @@
+<mat-toolbar>
+  <a style="cursor: pointer" routerLink="/"> Pepper Cloud Blogs</a>
+  <span class="spacer"></span>
+  <button
+    mat-raised-button
+    class="create"
+    matTooltip="Create Blog"
+    [disabled]="isLoginMode"
+    (click)="createBlogDialog()"
+  >
+    <mat-icon>post_add</mat-icon>
+  </button>
+  <div *ngIf="!isLoginMode">
+    <button mat-stroked-button routerLink="/logout">Log Out</button>
+  </div>
+  <div *ngIf="isLoginMode">
+    <button mat-stroked-button routerLink="/login">Log In</button>
+    <button mat-flat-button routerLink="/signup">Sign Up</button>
+  </div>
+</mat-toolbar>
