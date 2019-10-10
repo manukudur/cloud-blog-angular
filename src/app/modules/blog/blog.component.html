@@ -4,12 +4,14 @@
     Create your own Blog here.
   </h1>
 </div>
-<div *ngFor="let blog of blogs" style="margin-bottom: 20px; width: 100%;">
+<div *ngFor="let blog of blogs" class="blog">
   <mat-card class="bc">
     <mat-card-header>
       <mat-card-subtitle>
-        @{{ blog.creator }} -
-        {{ formatTime(blog.created_time) }}
+        <span>
+          <strong>@{{ blog.creator }}</strong>
+        </span>
+        <span> - {{ formatTime(blog.created_time) }}</span>
       </mat-card-subtitle>
       <mat-card-title>{{ blog.title | titlecase }}</mat-card-title>
       <span class="spacer"></span>
@@ -17,6 +19,7 @@
         mat-icon-button
         [matMenuTriggerFor]="menu"
         aria-label="Example icon-button with a menu"
+        [disabled]="authUserActionButton(blog.creator)"
       >
         <mat-icon>more_horiz</mat-icon>
       </button>
@@ -31,7 +34,7 @@
         </button>
       </mat-menu>
     </mat-card-header>
-    <hr />
+    <mat-divider></mat-divider>
     <img mat-card-image src="{{ blog.image_url }}" alt="" />
     <mat-card-content>
       <p>

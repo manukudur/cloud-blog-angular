@@ -4,6 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { AuthService } from "src/app/core/services/auth.service";
 import { BlogDialogComponent } from "../blog-dialog/blog-dialog.component";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { BlogService } from "src/app/core/services/blog.service";
 
 @Component({
   selector: "app-navbar",
@@ -16,6 +17,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private authService: AuthService,
+    private blogService: BlogService,
     private _snackBar: MatSnackBar
   ) {}
 
@@ -29,6 +31,9 @@ export class NavbarComponent implements OnInit {
       this.isLoginMode = !loginState;
     });
   }
+  getUsername() {
+    return localStorage.getItem("user");
+  }
   createBlogDialog() {
     const dialogRef = this.dialog.open(BlogDialogComponent, {
       width: "500px",
@@ -40,6 +45,7 @@ export class NavbarComponent implements OnInit {
         this._snackBar.open("Blog " + received.message + " successfully", "", {
           duration: 2000
         });
+        this.blogService.reloadBlogs.next();
       }
     });
   }

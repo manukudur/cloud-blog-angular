@@ -13,6 +13,7 @@ import { BlogService } from "src/app/core/services/blog.service";
 export class BlogDialogComponent implements OnInit {
   public form: FormGroup;
   loading: boolean = true;
+  error: string = null;
   constructor(
     public blogService: BlogService,
     public dialogRef: MatDialogRef<BlogDialogComponent>,
@@ -22,14 +23,26 @@ export class BlogDialogComponent implements OnInit {
     if (this.data.blog) {
       this.form = new FormGroup({
         _id: new FormControl(this.data.blog._id),
-        title: new FormControl(this.data.blog.title, Validators.required),
-        desc: new FormControl(this.data.blog.desc, Validators.required),
+        title: new FormControl(this.data.blog.title, [
+          Validators.required,
+          Validators.minLength(3)
+        ]),
+        desc: new FormControl(this.data.blog.desc, [
+          Validators.required,
+          Validators.minLength(10)
+        ]),
         image_url: new FormControl(this.data.blog.image_url)
       });
     } else {
       this.form = new FormGroup({
-        title: new FormControl(null, Validators.required),
-        desc: new FormControl(null, Validators.required),
+        title: new FormControl(null, [
+          Validators.required,
+          Validators.minLength(3)
+        ]),
+        desc: new FormControl(null, [
+          Validators.required,
+          Validators.minLength(10)
+        ]),
         image_url: new FormControl(null)
       });
     }
@@ -37,13 +50,25 @@ export class BlogDialogComponent implements OnInit {
   submitBlogForm() {
     this.loading = false;
     if (this.data.dialogType === "Edit") {
-      this.blogService.updateBlog(this.form.value).subscribe(received => {
-        this.onNoClick(received);
-      });
+      this.blogService.updateBlog(this.form.value).subscribe(
+        received => {
+          this.onNoClick(received);
+        },
+        error => {
+          this.error = error.error.message.errors.title.message;
+          this.loading = true;
+        }
+      );
     } else {
-      this.blogService.postBlog(this.form.value).subscribe(received => {
-        this.onNoClick(received);
-      });
+      this.blogService.postBlog(this.form.value).subscribe(
+        received => {
+          this.onNoClick(received);
+        },
+        error => {
+          this.error = error.error.message.errors.title.message;
+          this.loading = true;
+        }
+      );
     }
   }
   onNoClick(data: { message: string }): void {

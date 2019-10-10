@@ -30,6 +30,10 @@ mat-card {
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
     1px 1px 0 #000;
 }
+.blog {
+  margin-bottom: 20px;
+  width: 100%;
+}
 @media screen and (max-width: 801px) {
   mat-card {
     width: 90%;

@@ -20,10 +20,11 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatDividerModule } from "@angular/material/divider";
 
 import { AppComponent } from "./app.component";
 import { NavbarComponent } from "./shared/components/navbar/navbar.component";
-import { BlogsComponent } from "./blogs/blogs.component";
+import { BlogComponent } from "./modules/blog/blog.component";
 import { BlogDialogComponent } from "./shared/components/blog-dialog/blog-dialog.component";
 import { LoginComponent } from "./core/auth/login/login.component";
 import { SignupComponent } from "./shared/components/signup/signup.component";
@@ -31,12 +32,13 @@ import { ErrorDialogComponent } from "./shared/components/error-dialog/error-dia
 import { SuccessDialogComponent } from "./shared/components/success-dialog/success-dialog.component";
 import { LogoutComponent } from "./core/auth/logout/logout.component";
 import { AuthInterceptor } from "./core/auth/auth.interceptor";
+import { LoginSignupGuard } from "./core/guards/login-signup.guard";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    BlogsComponent,
+    BlogComponent,
     BlogDialogComponent,
     LoginComponent,
     SignupComponent,
@@ -64,7 +66,8 @@ import { AuthInterceptor } from "./core/auth/auth.interceptor";
     MatNativeDateModule,
     MatProgressBarModule,
     MatMenuModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDividerModule
   ],
   entryComponents: [
     BlogDialogComponent,
@@ -72,7 +75,8 @@ import { AuthInterceptor } from "./core/auth/auth.interceptor";
     SuccessDialogComponent
   ],
   providers: [
-    MatDatepickerModule
+    MatDatepickerModule,
+    LoginSignupGuard
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: AuthInterceptor,

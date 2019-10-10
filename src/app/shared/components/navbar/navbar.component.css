@@ -19,3 +19,6 @@ a {
   background-color: rgb(45, 250, 45);
   color: white;
 }
+.mat-menu-btn {
+  width: auto;
+}

@@ -11,13 +11,7 @@ import { Blog } from "../../shared/models/blog.model";
 })
 export class BlogService implements OnInit {
   private url: string = environment.url;
-  private header = {
-    headers: new HttpHeaders().set(
-      "Authorization",
-      localStorage.getItem("token")
-    )
-  };
-  // private Blogs = new Subject<[Blog]>();
+  reloadBlogs = new Subject();
 
   constructor(private http: HttpClient) {}
   ngOnInit(): void {}
@@ -30,20 +24,32 @@ export class BlogService implements OnInit {
     return this.http.post<{ message: string; data: Blog }>(
       `${this.url}create/`,
       blog,
-      this.header
+      {
+        headers: new HttpHeaders().set(
+          "Authorization",
+          localStorage.getItem("token")
+        )
+      }
     );
   }
   updateBlog(blog: Blog): Observable<{ message: string }> {
     return this.http.patch<{ message: string }>(
       `${this.url}` + blog._id,
       blog,
-      this.header
+      {
+        headers: new HttpHeaders().set(
+          "Authorization",
+          localStorage.getItem("token")
+        )
+      }
     );
   }
   deleteBlogs(blogId: string): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(
-      `${this.url}` + blogId,
-      this.header
-    );
+    return this.http.delete<{ message: string }>(`${this.url}` + blogId, {
+      headers: new HttpHeaders().set(
+        "Authorization",
+        localStorage.getItem("token")
+      )
+    });
   }
 }

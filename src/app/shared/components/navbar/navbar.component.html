@@ -10,11 +10,28 @@
   >
     <mat-icon>post_add</mat-icon>
   </button>
-  <div *ngIf="!isLoginMode">
-    <button mat-stroked-button routerLink="/logout">Log Out</button>
-  </div>
   <div *ngIf="isLoginMode">
     <button mat-stroked-button routerLink="/login">Log In</button>
     <button mat-flat-button routerLink="/signup">Sign Up</button>
+  </div>
+  <div *ngIf="!isLoginMode">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item disabled class="mat-menu-btn">
+        <mat-icon>perm_identity</mat-icon>
+        <span>{{ getUsername() }}</span>
+      </button>
+      <button mat-menu-item disabled class="mat-menu-btn">
+        <mat-icon>settings_applications</mat-icon>
+        <span>Settings</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item routerLink="/logout" class="mat-menu-btn">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Log Out</span>
+      </button>
+    </mat-menu>
   </div>
 </mat-toolbar>
