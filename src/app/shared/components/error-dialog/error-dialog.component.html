@@ -1,0 +1,11 @@
+<div class="error">
+  <mat-icon>error</mat-icon>
+</div>
+<h1 mat-dialog-title>Oops! Something went wrong. Please try again.</h1>
+<p>Could not connect to server, Please check your Internet connection.</p>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancle</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+    Try Again
+  </button>
+</div>

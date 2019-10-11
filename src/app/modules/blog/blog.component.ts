@@ -1,20 +1,23 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { MatButton } from "@angular/material/button";
-
-import { BlogDialogComponent } from "./blog-dialog/blog-dialog.component";
-import { Blog } from "../models/blog.model";
-import { BlogService } from "../blog.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { Subscription } from "rxjs";
+import * as moment from "moment";
+
+import { BlogDialogComponent } from "../../shared/components/blog-dialog/blog-dialog.component";
+import { Blog } from "../../shared/models/blog.model";
+import { BlogService } from "../../core/services/blog.service";
 
 @Component({
-  selector: "app-blogs",
-  templateUrl: "./blogs.component.html",
-  styleUrls: ["./blogs.component.css"]
+  selector: "app-blog",
+  templateUrl: "./blog.component.html",
+  styleUrls: ["./blog.component.css"]
 })
-export class BlogsComponent implements OnInit {
+export class BlogComponent implements OnInit, OnDestroy {
   initialLoading: boolean = false;
+  reloadSubscription: Subscription;
   blogs: Blog[] = [];
+
   constructor(
     public dialog: MatDialog,
     public blogService: BlogService,
@@ -23,13 +26,27 @@ export class BlogsComponent implements OnInit {
 
   ngOnInit() {
     this.loadBlogs();
+    this.reloadSubscription = this.blogService.reloadBlogs.subscribe(() => {
+      this.loadBlogs();
+    });
   }
+
   loadBlogs() {
     this.blogService.getBlogs().subscribe(data => {
       this.blogs = data;
       this.initialLoading = true;
     });
   }
+
+  formatTime(time: Date) {
+    return moment(time).fromNow();
+  }
+
+  authUserActionButton(creator: string) {
+    if (creator === localStorage.getItem("user")) return false;
+    return true;
+  }
+
   deleteBlog(blog: Blog) {
     if (confirm("Are you sure to Delete this Blog ?")) {
       this.blogService.deleteBlogs(blog._id).subscribe(data => {
@@ -40,16 +57,13 @@ export class BlogsComponent implements OnInit {
       });
     }
   }
-  blogDialog(createBlog: MatButton, buttonType?: string, blog?: Blog): void {
-    createBlog.disabled = true;
+  editBlogDialog(blog: Blog): void {
     const dialogRef = this.dialog.open(BlogDialogComponent, {
-      width: "450px",
-      height: "450px",
-      data: { dialogType: buttonType, blog: blog }
+      width: "500px",
+      data: { dialogType: "Edit", blog: blog }
     });
 
     dialogRef.afterClosed().subscribe(received => {
-      createBlog.disabled = false;
       if (received) {
         this._snackBar.open("Blog " + received.message + " successfully", "", {
           duration: 2000
@@ -57,5 +71,8 @@ export class BlogsComponent implements OnInit {
         this.loadBlogs();
       }
     });
+  }
+  ngOnDestroy() {
+    this.reloadSubscription.unsubscribe();
   }
 }

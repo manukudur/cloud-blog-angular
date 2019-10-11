@@ -1,0 +1,234 @@
+<div class="signup" style="margin-bottom: 50px;">
+  <mat-card>
+    <div style="margin-top: 30px;" class="center">
+      <mat-icon class="signup-icon">person_add</mat-icon>
+      <p style="font-size: 1.5rem;" class="ok">Sign up</p>
+    </div>
+    <mat-card-content class="center">
+      <form [formGroup]="signup" (ngSubmit)="submitSignupForm()">
+        <div>
+          <mat-form-field appearance="outline" id="left">
+            <mat-label>First Name</mat-label>
+            <input
+              formControlName="first_name"
+              matInput
+              autocomplete="off"
+              required
+            />
+            <mat-error
+              *ngIf="
+                signup.get('first_name').invalid &&
+                signup.get('first_name').touched
+              "
+              >{{ getFirstNameErrorMessage() }}</mat-error
+            >
+          </mat-form-field>
+          <mat-form-field appearance="outline" id="right">
+            <mat-label>Last Name</mat-label>
+            <input
+              formControlName="last_name"
+              matInput
+              autocomplete="off"
+              required
+            />
+            <mat-error
+              *ngIf="
+                signup.get('last_name').invalid &&
+                signup.get('last_name').touched
+              "
+            >
+              {{ getLastNameErrorMessage() }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Date of Birth</mat-label>
+          <input
+            formControlName="dob"
+            matInput
+            [matDatepicker]="picker"
+            placeholder="MM/DD/YYYY"
+            [max]="maxDate"
+            autocomplete="off"
+            required
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker
+            touchUi
+            #picker
+            startView="year"
+            [startAt]="startDate"
+          ></mat-datepicker>
+          <mat-error
+            *ngIf="signup.get('dob').invalid && signup.get('dob').touched"
+          >
+            {{ getDobErrorMessage() }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Create your Username</mat-label>
+          <input
+            formControlName="username"
+            matInput
+            type="email"
+            autocomplete="off"
+            required
+          />
+          <mat-icon matSuffix class="ok" *ngIf="signup.get('username').valid"
+            >check
+          </mat-icon>
+          <mat-icon
+            matSuffix
+            class="notok"
+            *ngIf="
+              !signup.get('username').valid &&
+              signup.get('username').dirty &&
+              !signup.get('username').pending
+            "
+            >close
+          </mat-icon>
+          <mat-spinner
+            matSuffix
+            [diameter]="20"
+            *ngIf="signup.get('username').pending"
+          ></mat-spinner>
+          <mat-error
+            *ngIf="
+              signup.get('username').invalid && signup.get('username').touched
+            "
+            >{{ getUsernameErrorMessage() }}</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Phone number</mat-label>
+          <input formControlName="phone_number" matInput type="tel" required />
+          <mat-icon
+            matSuffix
+            class="ok"
+            *ngIf="signup.get('phone_number').valid"
+            >check
+          </mat-icon>
+          <mat-icon
+            matSuffix
+            class="notok"
+            *ngIf="
+              !signup.get('phone_number').valid &&
+              signup.get('phone_number').dirty &&
+              !signup.get('phone_number').pending
+            "
+            >close
+          </mat-icon>
+          <mat-spinner
+            matSuffix
+            [diameter]="20"
+            *ngIf="signup.get('phone_number').pending"
+          ></mat-spinner>
+          <mat-error
+            *ngIf="
+              signup.get('phone_number').invalid &&
+              signup.get('phone_number').touched
+            "
+          >
+            {{ getPhoneNumberErrorMessage() }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Email Id</mat-label>
+          <input formControlName="email_id" matInput type="email" required />
+          <mat-icon matSuffix class="ok" *ngIf="signup.get('email_id').valid"
+            >check
+          </mat-icon>
+          <mat-icon
+            matSuffix
+            class="notok"
+            *ngIf="
+              !signup.get('email_id').valid &&
+              signup.get('email_id').dirty &&
+              !signup.get('email_id').pending
+            "
+            >close
+          </mat-icon>
+          <mat-spinner
+            matSuffix
+            [diameter]="20"
+            *ngIf="signup.get('email_id').pending"
+          ></mat-spinner>
+          <mat-error
+            *ngIf="
+              signup.get('email_id').invalid && signup.get('email_id').touched
+            "
+          >
+            {{ getEmailErrorMessage() }}
+          </mat-error>
+        </mat-form-field>
+        <div>
+          <mat-form-field appearance="outline" id="pass-left">
+            <mat-label>Password</mat-label>
+            <input
+              formControlName="password"
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              autocomplete="off"
+              required
+            />
+            <mat-error
+              *ngIf="
+                signup.get('password').invalid && signup.get('password').touched
+              "
+            >
+              {{ getPasswordErrorMessage() }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" id="pass-right">
+            <mat-label>confirm</mat-label>
+            <input
+              formControlName="confirm_password"
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              autocomplete="off"
+              [errorStateMatcher]="passwordMatcher"
+            />
+            <mat-error
+              *ngIf="
+                signup.hasError('notSame') &&
+                signup.get('confirm_password').touched
+              "
+            >
+              Password doesn't match
+            </mat-error>
+          </mat-form-field>
+          <button
+            mat-icon-button
+            id="pass-toggle"
+            type="button"
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </div>
+        <button
+          mat-raised-button
+          type="submit"
+          class="center form-field submit-btn"
+          color="primary"
+          [disabled]="!signup.valid"
+        >
+          Create an account
+          <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="loadingProgressBar"
+          ></mat-progress-bar>
+        </button>
+      </form>
+      <div style="margin-top: 20px">
+        <a routerLink="/login">I have an account.! Login</a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

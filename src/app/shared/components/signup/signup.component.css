@@ -1,0 +1,76 @@
+.signup {
+  margin: auto;
+  width: 40%;
+}
+.signup-icon {
+  transform: scale(2);
+}
+.center {
+  text-align: center;
+}
+mat-card {
+  background-color: rgba(255, 255, 255, 0.925);
+}
+.form-field {
+  width: 90%;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+#left {
+  width: 44%;
+  margin-right: 2%;
+}
+#right {
+  width: 44%;
+}
+#pass-left {
+  width: 39%;
+  margin-right: 2%;
+}
+#pass-right {
+  width: 39%;
+}
+#pass-toggle {
+  text-align: center;
+  width: 10%;
+}
+.submit-btn {
+  margin-top: 20px;
+}
+.ok {
+  color: rgb(25, 184, 25);
+}
+.notok {
+  color: red;
+}
+#pass-toggle-btn {
+  margin: auto;
+}
+@media screen and (max-width: 801px) {
+  .signup {
+    width: 90%;
+    margin: auto;
+  }
+  #left {
+    width: 90%;
+    margin-right: 0%;
+  }
+  #right {
+    width: 90%;
+  }
+  #pass-left {
+    width: 90%;
+    margin-right: 0%;
+  }
+  #pass-right {
+    width: 80%;
+  }
+  #pass-toggle {
+    text-align: center;
+    width: 10%;
+  }
+}

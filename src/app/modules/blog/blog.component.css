@@ -1,0 +1,42 @@
+.card-button {
+  margin-left: 5px;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+.col-lg-8 {
+  margin: auto;
+}
+mat-card {
+  width: 70%;
+  margin: auto;
+}
+.bc {
+  background-color: rgba(255, 255, 255, 0.925);
+}
+.create-button {
+  position: fixed;
+  top: 0;
+  /* z-index: 999; */
+  text-align: center;
+  margin-top: 36px;
+  width: 100%;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+.blog-header {
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+.blog {
+  margin-bottom: 20px;
+  width: 100%;
+}
+@media screen and (max-width: 801px) {
+  mat-card {
+    width: 90%;
+    margin: auto;
+  }
+}

@@ -3,4 +3,6 @@ export interface Blog {
   title: string;
   desc: string;
   image_url: string;
+  creator?: string;
+  created_time?: Date;
 }
