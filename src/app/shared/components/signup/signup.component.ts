@@ -28,6 +28,49 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initilizeForm();
+  }
+  submitSignupForm() {
+    let signupForm = this.signup.value;
+    this.signup.get("password").reset();
+    this.signup.get("confirm_password").reset();
+
+    this.loadingProgressBar = true;
+    this.authService.signup(signupForm).subscribe(
+      data => {
+        this.loadingProgressBar = false;
+        this.openSuccessDialog();
+      },
+      (error: HttpErrorResponse) => {
+        this.openErrorDialog();
+      }
+    );
+  }
+  openErrorDialog(): void {
+    const dialogRef = this.dialog.open(ErrorDialogComponent, {
+      width: "500px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadingProgressBar = false;
+      if (result) {
+        return;
+      }
+      this.initilizeForm();
+    });
+  }
+  openSuccessDialog(): void {
+    const dialogRef = this.dialog.open(SuccessDialogComponent, {
+      width: "500px"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadingProgressBar = false;
+      this.initilizeForm();
+    });
+  }
+
+  initilizeForm() {
     this.signup = new FormGroup(
       {
         first_name: new FormControl(null, [
@@ -122,6 +165,8 @@ export class SignupComponent implements OnInit {
       ? "Email ID is required"
       : this.signup.get("email_id").hasError("email")
       ? "Please enter a valid email address"
+      : this.signup.get("email_id").hasError("pattern")
+      ? "Please enter a valid email address"
       : "This Email ID already in use";
   }
   getPasswordErrorMessage() {
@@ -137,44 +182,5 @@ export class SignupComponent implements OnInit {
     let pass = group.get("password").value;
     let confirmPass = group.get("confirm_password").value;
     return pass === confirmPass ? null : { notSame: true };
-  }
-  submitSignupForm() {
-    let signupForm = this.signup.value;
-    this.signup.get("password").reset();
-    this.signup.get("confirm_password").reset();
-
-    this.loadingProgressBar = true;
-    this.authService.signup(signupForm).subscribe(
-      data => {
-        this.loadingProgressBar = false;
-        this.openSuccessDialog();
-      },
-      (error: HttpErrorResponse) => {
-        this.openErrorDialog();
-      }
-    );
-  }
-  openErrorDialog(): void {
-    const dialogRef = this.dialog.open(ErrorDialogComponent, {
-      width: "500px"
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadingProgressBar = false;
-      if (result) {
-        return;
-      }
-      this.signup.reset();
-    });
-  }
-  openSuccessDialog(): void {
-    const dialogRef = this.dialog.open(SuccessDialogComponent, {
-      width: "500px"
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadingProgressBar = false;
-      this.signup.reset();
-    });
   }
 }
