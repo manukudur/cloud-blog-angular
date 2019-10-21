@@ -20,3 +20,6 @@ button {
   text-align: center;
   color: red;
 }
+.container {
+  padding: 24px;
+}

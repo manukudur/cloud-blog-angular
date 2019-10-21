@@ -5,7 +5,11 @@
       <p style="font-size: 1.5rem;" class="ok">Sign up</p>
     </div>
     <mat-card-content class="center">
-      <form [formGroup]="signup" (ngSubmit)="submitSignupForm()">
+      <form
+        [formGroup]="signup"
+        #formDirective="ngForm"
+        (ngSubmit)="submitSignupForm(formDirective)"
+      >
         <div>
           <mat-form-field appearance="outline" id="left">
             <mat-label>First Name</mat-label>

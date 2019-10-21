@@ -21,6 +21,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatDividerModule } from "@angular/material/divider";
+import { MatTabsModule } from "@angular/material/tabs";
 
 import { AppComponent } from "./app.component";
 import { NavbarComponent } from "./shared/components/navbar/navbar.component";
@@ -67,7 +68,8 @@ import { LoginSignupGuard } from "./core/guards/login-signup.guard";
     MatProgressBarModule,
     MatMenuModule,
     MatExpansionModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTabsModule
   ],
   entryComponents: [
     BlogDialogComponent,

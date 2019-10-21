@@ -37,9 +37,9 @@ export class NavbarComponent implements OnInit {
   createBlogDialog() {
     const dialogRef = this.dialog.open(BlogDialogComponent, {
       width: "500px",
+      panelClass: "custom-dialog-container",
       data: { dialogType: "Create" }
     });
-
     dialogRef.afterClosed().subscribe(received => {
       if (received) {
         this._snackBar.open("Blog " + received.message + " successfully", "", {

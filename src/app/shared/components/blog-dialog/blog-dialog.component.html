@@ -1,52 +1,56 @@
-<h1 class="mat-display-1">{{ data.dialogType }} your Blog</h1>
-<div>
-  <form
-    class="blogForm"
-    [formGroup]="form"
-    (ngSubmit)="submitBlogForm()"
-    autocomplete="off"
-  >
-    <p *ngIf="error" class="error">{{ error }}</p>
-    <mat-form-field appearance="fill">
-      <input matInput formControlName="title" placeholder="Title" />
-      <mat-hint>Enter atleast 3 characters</mat-hint>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <textarea
-        rows="7"
-        matInput
-        formControlName="desc"
-        placeholder="Description"
-      ></textarea>
-      <mat-hint>Enter atleast 10 characters</mat-hint>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <input matInput formControlName="image_url" placeholder="Image URL" />
-    </mat-form-field>
-    <div style="display: flex;">
-      <span class="spacer"></span>
-      <mat-spinner [diameter]="25" *ngIf="!loading"></mat-spinner>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!form.valid || !loading"
-      >
-        <mat-icon>{{
-          data.dialogType === "Create" ? "class" : "create"
-        }}</mat-icon>
-        {{ data.dialogType === "Create" ? "Create" : "Edit" }}
-      </button>
-      <button
-        mat-raised-button
-        color="warn"
-        type="button"
-        [disabled]="!loading"
-        (click)="onCancleClick()"
-      >
-        <i class="material-icons">close</i>
-        Cancel
-      </button>
-    </div>
-  </form>
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<div class="container">
+  <h1 class="mat-display-1">{{ data.dialogType }} your Blog</h1>
+  <div>
+    <form
+      class="blogForm"
+      [formGroup]="form"
+      (ngSubmit)="submitBlogForm()"
+      autocomplete="off"
+    >
+      <p *ngIf="error" class="error">{{ error }}</p>
+      <mat-form-field appearance="fill">
+        <input matInput formControlName="title" placeholder="Title" />
+        <mat-hint>Enter atleast 3 characters</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <textarea
+          rows="7"
+          matInput
+          formControlName="desc"
+          placeholder="Description"
+        ></textarea>
+        <mat-hint>Enter atleast 10 characters</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <input matInput formControlName="image_url" placeholder="Image URL" />
+      </mat-form-field>
+      <mat-card-actions>
+        <div style="display: flex;">
+          <span class="spacer"></span>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!form.valid || loading"
+          >
+            <mat-icon>{{
+              data.dialogType === "Create" ? "class" : "create"
+            }}</mat-icon>
+            {{ data.dialogType === "Create" ? "Create" : "Edit" }}
+          </button>
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            [disabled]="loading"
+            (click)="onCancleClick()"
+          >
+            <mat-icon>close</mat-icon>
+            Cancel
+          </button>
+        </div>
+      </mat-card-actions>
+    </form>
+  </div>
 </div>

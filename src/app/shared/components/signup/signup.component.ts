@@ -1,5 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormGroupDirective
+} from "@angular/forms";
 import { HttpErrorResponse } from "@angular/common/http";
 import { MatDialog } from "@angular/material/dialog";
 
@@ -30,7 +35,7 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
     this.initilizeForm();
   }
-  submitSignupForm() {
+  submitSignupForm(formDirective: FormGroupDirective) {
     let signupForm = this.signup.value;
     this.signup.get("password").reset();
     this.signup.get("confirm_password").reset();
@@ -39,14 +44,14 @@ export class SignupComponent implements OnInit {
     this.authService.signup(signupForm).subscribe(
       data => {
         this.loadingProgressBar = false;
-        this.openSuccessDialog();
+        this.openSuccessDialog(formDirective);
       },
       (error: HttpErrorResponse) => {
-        this.openErrorDialog();
+        this.openErrorDialog(formDirective);
       }
     );
   }
-  openErrorDialog(): void {
+  openErrorDialog(formDirective: FormGroupDirective): void {
     const dialogRef = this.dialog.open(ErrorDialogComponent, {
       width: "500px"
     });
@@ -56,17 +61,19 @@ export class SignupComponent implements OnInit {
       if (result) {
         return;
       }
-      this.initilizeForm();
+      this.signup.reset();
+      formDirective.resetForm();
     });
   }
-  openSuccessDialog(): void {
+  openSuccessDialog(formDirective: FormGroupDirective): void {
     const dialogRef = this.dialog.open(SuccessDialogComponent, {
       width: "500px"
     });
 
     dialogRef.afterClosed().subscribe(result => {
       this.loadingProgressBar = false;
-      this.initilizeForm();
+      this.signup.reset();
+      formDirective.resetForm();
     });
   }
 

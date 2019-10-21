@@ -1,56 +1,63 @@
 <div class="login">
   <mat-card>
-    <div style="margin-top: 30px;" class="center">
-      <mat-icon style="transform: scale(2);">lock</mat-icon>
-      <p style="font-size: 1.5rem; color: red;">Log in</p>
-    </div>
-    <mat-card-content class="center">
-      <p style="color: red">{{ error | titlecase }}</p>
-      <form
-        [formGroup]="login"
-        autocomplete="off"
-        (ngSubmit)="submitLoginForm()"
-      >
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Username or Email</mat-label>
-          <input matInput formControlName="usernameOrEmail" required />
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Enter your password</mat-label>
-          <input
-            matInput
-            [type]="hide ? 'password' : 'text'"
-            formControlName="password"
-            required
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
-            type="button"
+    <mat-progress-bar
+      mode="indeterminate"
+      *ngIf="loadingProgressBar"
+    ></mat-progress-bar>
+    <mat-tab-group mat-stretch-tabs>
+      <mat-tab label="Login">
+        <div style="margin-top: 30px;" class="center">
+          <mat-icon style="transform: scale(2);">lock</mat-icon>
+          <p style="font-size: 1.5rem; color: red;">Log in</p>
+        </div>
+        <mat-card-content class="center">
+          <p style="color: red">{{ error | titlecase }}</p>
+          <form
+            [formGroup]="login"
+            autocomplete="off"
+            (ngSubmit)="submitLoginForm()"
           >
-            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-          </button>
-        </mat-form-field>
-        <button
-          mat-raised-button
-          class="center form-field submit-btn"
-          color="primary"
-          type="submit"
-          [disabled]="!login.valid"
-        >
-          Log in
-          <mat-progress-bar
-            mode="indeterminate"
-            *ngIf="loadingProgressBar"
-          ></mat-progress-bar>
-        </button>
-      </form>
-      <div style="margin-top: 20px">
-        <a routerLink="/signup">Don't have an account? Sign Up</a>
-      </div>
-    </mat-card-content>
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Username or Email</mat-label>
+              <input matInput formControlName="usernameOrEmail" required />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Enter your password</mat-label>
+              <input
+                matInput
+                [type]="hide ? 'password' : 'text'"
+                formControlName="password"
+                required
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+                type="button"
+              >
+                <mat-icon>{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+            <button
+              mat-raised-button
+              class="center form-field submit-btn"
+              color="primary"
+              type="submit"
+              [disabled]="!login.valid"
+            >
+              Log in
+            </button>
+          </form>
+          <div style="margin-top: 20px">
+            <a routerLink="/signup">Don't have an account? Sign Up</a>
+          </div>
+        </mat-card-content>
+      </mat-tab>
+      <mat-tab label="Forgot Password">comming soon...</mat-tab>
+    </mat-tab-group>
   </mat-card>
 </div>

@@ -52,4 +52,7 @@ export class BlogService implements OnInit {
       )
     });
   }
+  getBlog(blogId: string): Observable<{ blog: Blog }> {
+    return this.http.get<{ blog: Blog }>(`${this.url}` + blogId);
+  }
 }

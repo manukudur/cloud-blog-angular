@@ -60,6 +60,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   editBlogDialog(blog: Blog): void {
     const dialogRef = this.dialog.open(BlogDialogComponent, {
       width: "500px",
+      panelClass: "custom-dialog-container",
       data: { dialogType: "Edit", blog: blog }
     });
 

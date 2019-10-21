@@ -12,51 +12,41 @@ import { BlogService } from "src/app/core/services/blog.service";
 })
 export class BlogDialogComponent implements OnInit {
   public form: FormGroup;
-  loading: boolean = true;
+  loading: boolean = false;
   error: string = null;
+
   constructor(
     public blogService: BlogService,
     public dialogRef: MatDialogRef<BlogDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { dialogType: string; blog?: Blog }
   ) {}
+
   ngOnInit(): void {
+    this.initilizeForm();
     if (this.data.blog) {
-      this.form = new FormGroup({
-        _id: new FormControl(this.data.blog._id),
-        title: new FormControl(this.data.blog.title, [
-          Validators.required,
-          Validators.minLength(3)
-        ]),
-        desc: new FormControl(this.data.blog.desc, [
-          Validators.required,
-          Validators.minLength(10)
-        ]),
-        image_url: new FormControl(this.data.blog.image_url)
-      });
-    } else {
-      this.form = new FormGroup({
-        title: new FormControl(null, [
-          Validators.required,
-          Validators.minLength(3)
-        ]),
-        desc: new FormControl(null, [
-          Validators.required,
-          Validators.minLength(10)
-        ]),
-        image_url: new FormControl(null)
+      this.loading = true;
+      this.blogService.getBlog(this.data.blog._id).subscribe((blog: any) => {
+        this.form.setValue({
+          _id: blog._id,
+          title: blog.title,
+          desc: blog.desc,
+          image_url: blog.image_url
+        });
+        this.loading = false;
       });
     }
   }
+
   submitBlogForm() {
-    this.loading = false;
+    this.loading = true;
     if (this.data.dialogType === "Edit") {
       this.blogService.updateBlog(this.form.value).subscribe(
         received => {
           this.onNoClick(received);
         },
         error => {
-          this.error = error.error.message.errors.title.message;
-          this.loading = true;
+          this.error = error.error.message;
+          this.loading = false;
         }
       );
     } else {
@@ -65,8 +55,8 @@ export class BlogDialogComponent implements OnInit {
           this.onNoClick(received);
         },
         error => {
-          this.error = error.error.message.errors.title.message;
-          this.loading = true;
+          this.error = error.error.message;
+          this.loading = false;
         }
       );
     }
@@ -76,5 +66,19 @@ export class BlogDialogComponent implements OnInit {
   }
   onCancleClick(): void {
     this.dialogRef.close();
+  }
+  initilizeForm() {
+    this.form = new FormGroup({
+      _id: new FormControl(null),
+      title: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3)
+      ]),
+      desc: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(10)
+      ]),
+      image_url: new FormControl(null)
+    });
   }
 }
