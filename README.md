@@ -16,11 +16,11 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ## Steps to Install and Run
 
-1. Download zip file and extract (or) open terminal/command-prompt and run "git clone https://github.com/manukudur/cloud-blog-angular.git" if git installed.
+1. Download zip file and extract (or) open terminal/command-prompt and run `"git clone https://github.com/manukudur/cloud-blog-angular.git"` if git installed.
 
-2. Navigate to project folder in terminal/command-prompt and run "npm install" (or) if yarn installed in your computer run "yarn install".
+2. Navigate to project folder in terminal/command-prompt and run "npm install" (or) if yarn installed in your computer run `"yarn install"`.
 
-3. After installation of all packages run "npm start".
+3. After installation of all packages run `"npm start"`.
 
 ---
 
