@@ -1,12 +1,15 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { ActivatedRoute, Params, Router } from "@angular/router";
+import { HttpErrorResponse } from "@angular/common/http";
 import { Subscription } from "rxjs";
 import * as moment from "moment";
 
 import { BlogDialogComponent } from "../../shared/components/blog-dialog/blog-dialog.component";
 import { Blog } from "../../shared/models/blog.model";
 import { BlogService } from "../../core/services/blog.service";
+import { ConfirmDialogComponent } from "src/app/shared/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: "app-blog",
@@ -21,13 +24,25 @@ export class BlogComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     public blogService: BlogService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.loadBlogs();
-    this.reloadSubscription = this.blogService.reloadBlogs.subscribe(() => {
-      this.loadBlogs();
+    this.activatedRoute.params.subscribe((params: Params) => {
+      if (params["username"]) {
+        this.loadUserBlogs();
+      } else {
+        this.loadBlogs();
+      }
+      this.reloadSubscription = this.blogService.reloadBlogs.subscribe(() => {
+        if (params["username"]) {
+          this.loadUserBlogs();
+        } else {
+          this.loadBlogs();
+        }
+      });
     });
   }
 
@@ -36,6 +51,21 @@ export class BlogComponent implements OnInit, OnDestroy {
       this.blogs = data;
       this.initialLoading = true;
     });
+  }
+
+  loadUserBlogs() {
+    let username = this.activatedRoute.snapshot.params["username"];
+    this.blogService.getUserBlogs(username).subscribe(
+      (data: Blog[]) => {
+        this.blogs = data;
+        this.initialLoading = true;
+      },
+      (err: HttpErrorResponse) => {
+        if (err.status === 404) {
+          this.router.navigate(["/"]);
+        }
+      }
+    );
   }
 
   formatTime(time: Date) {
@@ -48,15 +78,26 @@ export class BlogComponent implements OnInit, OnDestroy {
   }
 
   deleteBlog(blog: Blog) {
-    if (confirm("Are you sure to Delete this Blog ?")) {
-      this.blogService.deleteBlogs(blog._id).subscribe(data => {
-        this._snackBar.open("Blog " + data.message + " successfully", "", {
-          duration: 2000
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      disableClose: true,
+      width: "500px",
+      data: {
+        message: "Are you sure to Delete this Blog ?"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.blogService.deleteBlogs(blog._id).subscribe(data => {
+          this._snackBar.open("Blog " + data.message + " successfully", "", {
+            duration: 2000
+          });
+          this.blogService.reloadBlogs.next();
         });
-        this.loadBlogs();
-      });
-    }
+      }
+    });
   }
+
   editBlogDialog(blog: Blog): void {
     const dialogRef = this.dialog.open(BlogDialogComponent, {
       width: "500px",
@@ -69,10 +110,11 @@ export class BlogComponent implements OnInit, OnDestroy {
         this._snackBar.open("Blog " + received.message + " successfully", "", {
           duration: 2000
         });
-        this.loadBlogs();
+        this.blogService.reloadBlogs.next();
       }
     });
   }
+
   ngOnDestroy() {
     this.reloadSubscription.unsubscribe();
   }

@@ -1,0 +1,48 @@
+<mat-progress-bar
+  mode="indeterminate"
+  *ngIf="loadingProgressBar"
+></mat-progress-bar>
+<mat-card-title>
+  <p>
+    Change Password
+  </p>
+</mat-card-title>
+<mat-error>{{ error }}</mat-error>
+<form
+  [formGroup]="changepassword"
+  #formDirective="ngForm"
+  (ngSubmit)="update(formDirective)"
+>
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Old Password</mat-label>
+      <input formControlName="old_password" matInput type="password" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>New Password</mat-label>
+      <input formControlName="new_password" matInput type="password" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Confirm Password</mat-label>
+      <input
+        formControlName="confirm_password"
+        matInput
+        type="password"
+        required
+      />
+    </mat-form-field>
+  </div>
+  <mat-hint
+    >Password should contain atleast 6 characters, And it should include
+    lowercase, uppercase, numeric, and special character.</mat-hint
+  >
+  <div>
+    <button
+      mat-stroked-button
+      color="primary"
+      [disabled]="!changepassword.valid"
+    >
+      Update
+    </button>
+  </div>
+</form>

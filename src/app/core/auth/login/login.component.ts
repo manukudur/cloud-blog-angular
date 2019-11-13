@@ -14,7 +14,7 @@ import { Router } from "@angular/router";
 export class LoginComponent implements OnInit {
   hide = true;
   login: FormGroup;
-  loadingProgressBar: boolean = false;
+  loading: boolean = false;
   error: string = null;
 
   constructor(public authService: AuthService, private router: Router) {}
@@ -25,13 +25,14 @@ export class LoginComponent implements OnInit {
       password: new FormControl(null, Validators.required)
     });
   }
+
   submitLoginForm() {
-    this.loadingProgressBar = !this.loadingProgressBar;
+    this.loading = !this.loading;
     let loginForm: LoginForm = this.validateUsernameOrEmail();
     this.login.get("password").reset();
     this.authService.login(loginForm).subscribe(
       response => {
-        this.loadingProgressBar = !this.loadingProgressBar;
+        this.loading = !this.loading;
         this.error = null;
         this.authService.setloginState(true);
         localStorage.setItem("token", response.token);
@@ -39,11 +40,12 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/"]);
       },
       (error: HttpErrorResponse) => {
-        this.loadingProgressBar = !this.loadingProgressBar;
+        this.loading = !this.loading;
         this.error = error.error.message;
       }
     );
   }
+
   validateUsernameOrEmail() {
     var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let usernameOrEmail = this.login.get("usernameOrEmail").value;

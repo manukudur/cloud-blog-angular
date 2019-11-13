@@ -1,0 +1,75 @@
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<form [formGroup]="form" #formDirective="ngForm">
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Username</mat-label>
+    <input
+      formControlName="username"
+      matInput
+      type="email"
+      autocomplete="off"
+      [readonly]="editMode"
+      required
+    />
+    <mat-icon matSuffix class="ok" *ngIf="form.get('username').valid"
+      >check
+    </mat-icon>
+    <mat-icon
+      matSuffix
+      class="notok"
+      *ngIf="
+        !form.get('username').valid &&
+        form.get('username').dirty &&
+        !form.get('username').pending
+      "
+      >close
+    </mat-icon>
+    <mat-spinner
+      matSuffix
+      [diameter]="20"
+      *ngIf="form.get('username').pending && !editMode"
+    ></mat-spinner>
+    <mat-error
+      *ngIf="form.get('username').invalid && form.get('username').touched"
+      >{{ getUsernameErrorMessage() }}</mat-error
+    >
+  </mat-form-field>
+  <button
+    *ngIf="editMode"
+    mat-button
+    color="primary"
+    type="button"
+    (click)="toggleEdit()"
+    [disabled]="loading"
+  >
+    Edit
+  </button>
+  <button
+    *ngIf="!editMode"
+    mat-stroked-button
+    color="primary"
+    type="button"
+    (click)="update()"
+  >
+    Update
+  </button>
+  <button
+    *ngIf="!editMode"
+    mat-stroked-button
+    color="warn"
+    type="button"
+    (click)="toggleEdit()"
+  >
+    Cancle Edit
+  </button>
+  <div>
+    <button
+      mat-stroked-button
+      color="warn"
+      type="button"
+      [disabled]="loading || !editMode"
+      (click)="openConfirmDialog()"
+    >
+      Delete Account
+    </button>
+  </div>
+</form>

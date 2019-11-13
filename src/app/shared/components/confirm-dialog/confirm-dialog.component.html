@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{ data.message }}</h1>
+<p *ngFor="let note of data.notes; let i = index">{{ i + 1 }}. {{ note }}</p>
+<div mat-dialog-actions>
+  <span class="spacer"></span>
+  <button mat-stroked-button color="primary" (click)="onNoClick()">
+    Cancle
+  </button>
+  <button mat-stroked-button color="warn" [mat-dialog-close]="true">
+    Confirm
+  </button>
+</div>

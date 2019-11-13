@@ -34,6 +34,10 @@ mat-card {
   margin-bottom: 20px;
   width: 100%;
 }
+a {
+  text-decoration: none;
+  color: black;
+}
 @media screen and (max-width: 801px) {
   mat-card {
     width: 90%;

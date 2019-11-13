@@ -22,56 +22,99 @@ import { SuccessDialogComponent } from "src/app/shared/components/success-dialog
 export class SignupComponent implements OnInit {
   hide: boolean = true;
   signup: FormGroup;
-  loadingProgressBar: boolean = false;
+  loading: boolean = false;
   passwordMatcher = new PasswordStateMatcher();
   maxDate = new Date();
   startDate = new Date(1990, 0, 1);
+
   constructor(
     public authService: AuthService,
-    private uniueValidator: UniqueValidator,
+    private uniqueValidator: UniqueValidator,
     public dialog: MatDialog
   ) {}
 
   ngOnInit() {
     this.initilizeForm();
   }
+
   submitSignupForm(formDirective: FormGroupDirective) {
     let signupForm = this.signup.value;
     this.signup.get("password").reset();
     this.signup.get("confirm_password").reset();
 
-    this.loadingProgressBar = true;
+    this.loading = true;
     this.authService.signup(signupForm).subscribe(
       data => {
-        this.loadingProgressBar = false;
+        this.loading = false;
         this.openSuccessDialog(formDirective);
       },
       (error: HttpErrorResponse) => {
-        this.openErrorDialog(formDirective);
+        switch (error.status) {
+          case 0:
+            this.openErrorDialog(formDirective, 0);
+            break;
+          case 400:
+            this.openErrorDialog(formDirective, 400);
+            break;
+          default:
+            break;
+        }
       }
     );
   }
-  openErrorDialog(formDirective: FormGroupDirective): void {
-    const dialogRef = this.dialog.open(ErrorDialogComponent, {
-      width: "500px"
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadingProgressBar = false;
-      if (result) {
-        return;
-      }
-      this.signup.reset();
-      formDirective.resetForm();
-    });
+  openErrorDialog(formDirective: FormGroupDirective, status: number): void {
+    switch (status) {
+      case 0:
+        {
+          const dialogRef = this.dialog.open(ErrorDialogComponent, {
+            width: "500px",
+            data: {
+              message: "Oops! Something went wrong. Please try again.",
+              notes: [
+                "Could not connect to server, Please check your Internet connection",
+                "try Again."
+              ]
+            },
+            disableClose: true
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            this.loading = false;
+            if (result) {
+              return;
+            }
+            this.signup.reset();
+            formDirective.resetForm();
+          });
+        }
+        break;
+      case 400:
+        {
+          const dialogRef = this.dialog.open(ErrorDialogComponent, {
+            width: "500px",
+            data: { message: "Oops! Something went wrong. Please try again." },
+            disableClose: true
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            this.loading = false;
+            this.signup.reset();
+            formDirective.resetForm();
+          });
+        }
+        break;
+      default:
+        break;
+    }
   }
+
   openSuccessDialog(formDirective: FormGroupDirective): void {
     const dialogRef = this.dialog.open(SuccessDialogComponent, {
-      width: "500px"
+      width: "500px",
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadingProgressBar = false;
+      this.loading = false;
       this.signup.reset();
       formDirective.resetForm();
     });
@@ -95,8 +138,8 @@ export class SignupComponent implements OnInit {
         dob: new FormControl(null, [Validators.required]),
         phone_number: new FormControl(
           null,
-          [Validators.required, Validators.pattern(/^\d{10}$/)],
-          [this.uniueValidator.uniquePhoneNumberValidator()]
+          [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)],
+          [this.uniqueValidator.uniquePhoneNumberValidator()]
         ),
         username: new FormControl(
           null,
@@ -106,7 +149,7 @@ export class SignupComponent implements OnInit {
             Validators.maxLength(50),
             Validators.pattern(/^[a-z0-9]{4,50}$/)
           ],
-          [this.uniueValidator.uniqueUsernameValidator()]
+          [this.uniqueValidator.uniqueUsernameValidator()]
         ),
         email_id: new FormControl(
           null,
@@ -115,7 +158,7 @@ export class SignupComponent implements OnInit {
             Validators.email,
             Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
           ],
-          [this.uniueValidator.uniqueEmailValidator()]
+          [this.uniqueValidator.uniqueEmailValidator()]
         ),
         password: new FormControl(null, [
           Validators.required,
@@ -130,6 +173,7 @@ export class SignupComponent implements OnInit {
       { validators: this.checkPasswords }
     );
   }
+
   getFirstNameErrorMessage() {
     return this.signup.get("first_name").hasError("required")
       ? "First Name is required"
@@ -164,7 +208,7 @@ export class SignupComponent implements OnInit {
     return this.signup.get("phone_number").hasError("required")
       ? "Phone number is required"
       : this.signup.get("phone_number").hasError("pattern")
-      ? "Phone number should be 10 digits, alphabets not alowed"
+      ? "Phone number should be valid, alphabets not alowed"
       : "This Phone number already in use";
   }
   getEmailErrorMessage() {
@@ -185,6 +229,7 @@ export class SignupComponent implements OnInit {
       ? "Include lowercase, uppercase, numeric, and special character."
       : "";
   }
+
   checkPasswords(group: FormGroup) {
     let pass = group.get("password").value;
     let confirmPass = group.get("confirm_password").value;

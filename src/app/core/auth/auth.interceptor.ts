@@ -14,14 +14,15 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    req = req.clone({
-      setHeaders: {
-        "Content-Type": "application/json; charset=utf-8",
-        Accept: "application/json",
-        Authorization: localStorage.getItem("token")
-      }
-    });
-
+    if (localStorage.getItem("token")) {
+      req = req.clone({
+        setHeaders: {
+          "Content-Type": "application/json; charset=utf-8",
+          Accept: "application/json",
+          Authorization: localStorage.getItem("token")
+        }
+      });
+    }
     return next.handle(req);
   }
 }

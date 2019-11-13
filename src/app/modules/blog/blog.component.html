@@ -9,7 +9,9 @@
     <mat-card-header>
       <mat-card-subtitle>
         <span>
-          <strong>@{{ blog.creator }}</strong>
+          <a routerLink="/{{ blog.creator }}">
+            <strong>@{{ blog.creator }}</strong>
+          </a>
         </span>
         <span> - {{ formatTime(blog.created_time) }}</span>
       </mat-card-subtitle>

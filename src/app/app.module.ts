@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { AppRoutingModule } from "./app-routing.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClientModule } from "@angular/common/http";
 
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatToolbarModule } from "@angular/material/toolbar";
@@ -25,27 +25,30 @@ import { MatTabsModule } from "@angular/material/tabs";
 
 import { AppComponent } from "./app.component";
 import { NavbarComponent } from "./shared/components/navbar/navbar.component";
-import { BlogComponent } from "./modules/blog/blog.component";
 import { BlogDialogComponent } from "./shared/components/blog-dialog/blog-dialog.component";
 import { LoginComponent } from "./core/auth/login/login.component";
 import { SignupComponent } from "./shared/components/signup/signup.component";
 import { ErrorDialogComponent } from "./shared/components/error-dialog/error-dialog.component";
 import { SuccessDialogComponent } from "./shared/components/success-dialog/success-dialog.component";
 import { LogoutComponent } from "./core/auth/logout/logout.component";
-import { AuthInterceptor } from "./core/auth/auth.interceptor";
 import { LoginSignupGuard } from "./core/guards/login-signup.guard";
+import { BlogModule } from "./modules/blog/blog.module";
+import { AuthGuard } from "./core/guards/auth.guard";
+import { ConfirmDialogComponent } from "./shared/components/confirm-dialog/confirm-dialog.component";
+import { ConfirmPasswordComponent } from "./shared/components/confirm-password/confirm-password.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    BlogComponent,
     BlogDialogComponent,
     LoginComponent,
     SignupComponent,
     ErrorDialogComponent,
     SuccessDialogComponent,
-    LogoutComponent
+    LogoutComponent,
+    ConfirmDialogComponent,
+    ConfirmPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -69,22 +72,16 @@ import { LoginSignupGuard } from "./core/guards/login-signup.guard";
     MatMenuModule,
     MatExpansionModule,
     MatDividerModule,
-    MatTabsModule
+    MatTabsModule,
+    BlogModule
   ],
   entryComponents: [
     BlogDialogComponent,
     ErrorDialogComponent,
-    SuccessDialogComponent
+    SuccessDialogComponent,
+    ConfirmPasswordComponent
   ],
-  providers: [
-    MatDatepickerModule,
-    LoginSignupGuard
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthInterceptor,
-    //   multi: true
-    // }
-  ],
+  providers: [MatDatepickerModule, LoginSignupGuard, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

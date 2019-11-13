@@ -31,9 +31,11 @@ export class NavbarComponent implements OnInit {
       this.isLoginMode = !loginState;
     });
   }
+
   getUsername() {
     return localStorage.getItem("user");
   }
+
   createBlogDialog() {
     const dialogRef = this.dialog.open(BlogDialogComponent, {
       width: "500px",

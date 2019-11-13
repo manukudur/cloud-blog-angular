@@ -35,16 +35,16 @@
             [disabled]="!form.valid || loading"
           >
             <mat-icon>{{
-              data.dialogType === "Create" ? "class" : "create"
+              data.dialogType === "Create" ? "class" : "sync"
             }}</mat-icon>
-            {{ data.dialogType === "Create" ? "Create" : "Edit" }}
+            {{ data.dialogType === "Create" ? "Create" : "Update" }}
           </button>
           <button
             mat-raised-button
             color="warn"
             type="button"
             [disabled]="loading"
-            (click)="onCancleClick()"
+            (click)="onNoClick()"
           >
             <mat-icon>close</mat-icon>
             Cancel

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { HttpErrorResponse } from "@angular/common/http";
 
 import { Blog } from "src/app/shared/models/blog.model";
 import { BlogService } from "src/app/core/services/blog.service";
@@ -19,7 +20,9 @@ export class BlogDialogComponent implements OnInit {
     public blogService: BlogService,
     public dialogRef: MatDialogRef<BlogDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { dialogType: string; blog?: Blog }
-  ) {}
+  ) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     this.initilizeForm();
@@ -54,19 +57,18 @@ export class BlogDialogComponent implements OnInit {
         received => {
           this.onNoClick(received);
         },
-        error => {
+        (error: HttpErrorResponse) => {
           this.error = error.error.message;
           this.loading = false;
         }
       );
     }
   }
-  onNoClick(data: { message: string }): void {
+
+  onNoClick(data?: { message: string }): void {
     this.dialogRef.close(data);
   }
-  onCancleClick(): void {
-    this.dialogRef.close();
-  }
+
   initilizeForm() {
     this.form = new FormGroup({
       _id: new FormControl(null),

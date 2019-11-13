@@ -1,9 +1,7 @@
-/* .element {
-  position: absolute;
+app-navbar {
+  width: 100%;
+  position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
-  right: -17px;
-  overflow-y: scroll;
-  margin-bottom: 70px;
-} */
+  z-index: 999;
+}

@@ -1,0 +1,160 @@
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<form [formGroup]="profile" #formDirective="ngForm">
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input
+        [readonly]="editMode"
+        formControlName="first_name"
+        matInput
+        autocomplete="off"
+        required
+      />
+      <mat-error
+        *ngIf="
+          profile.get('first_name').invalid && profile.get('first_name').touched
+        "
+        >{{ getFirstNameErrorMessage() }}</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input
+        [readonly]="editMode"
+        formControlName="last_name"
+        matInput
+        autocomplete="off"
+        required
+      />
+      <mat-error
+        *ngIf="
+          profile.get('last_name').invalid && profile.get('last_name').touched
+        "
+      >
+        {{ getLastNameErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Date of Birth</mat-label>
+    <input
+      [readonly]="editMode"
+      formControlName="dob"
+      matInput
+      [matDatepicker]="picker"
+      placeholder="MM/DD/YYYY"
+      [max]="maxDate"
+      autocomplete="off"
+      required
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker
+      touchUi
+      #picker
+      startView="year"
+      [startAt]="startDate"
+    ></mat-datepicker>
+    <mat-error *ngIf="profile.get('dob').invalid && profile.get('dob').touched">
+      {{ getDobErrorMessage() }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Phone number</mat-label>
+    <input
+      [readonly]="editMode"
+      formControlName="phone_number"
+      matInput
+      type="tel"
+      required
+    />
+    <mat-icon matSuffix class="ok" *ngIf="profile.get('phone_number').valid"
+      >check
+    </mat-icon>
+    <mat-icon
+      matSuffix
+      class="notok"
+      *ngIf="
+        !profile.get('phone_number').valid &&
+        profile.get('phone_number').dirty &&
+        !profile.get('phone_number').pending
+      "
+      >close
+    </mat-icon>
+    <mat-spinner
+      matSuffix
+      [diameter]="20"
+      *ngIf="profile.get('phone_number').pending && !editMode"
+    ></mat-spinner>
+    <mat-error
+      *ngIf="
+        profile.get('phone_number').invalid &&
+        profile.get('phone_number').touched
+      "
+    >
+      {{ getPhoneNumberErrorMessage() }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Email Id</mat-label>
+    <input
+      [readonly]="editMode"
+      formControlName="email_id"
+      matInput
+      type="email"
+      required
+    />
+    <mat-icon matSuffix class="ok" *ngIf="profile.get('email_id').valid"
+      >check
+    </mat-icon>
+    <mat-icon
+      matSuffix
+      class="notok"
+      *ngIf="
+        !profile.get('email_id').valid &&
+        profile.get('email_id').dirty &&
+        !profile.get('email_id').pending
+      "
+      >close
+    </mat-icon>
+    <mat-spinner
+      matSuffix
+      [diameter]="20"
+      *ngIf="profile.get('email_id').pending && !editMode"
+    ></mat-spinner>
+    <mat-error
+      *ngIf="profile.get('email_id').invalid && profile.get('email_id').touched"
+    >
+      {{ getEmailErrorMessage() }}
+    </mat-error>
+  </mat-form-field>
+  <div>
+    <button
+      *ngIf="editMode"
+      mat-button
+      color="primary"
+      type="button"
+      (click)="toggleEdit()"
+      [disabled]="loading"
+    >
+      Edit
+    </button>
+    <button
+      *ngIf="!editMode"
+      mat-stroked-button
+      color="primary"
+      type="button"
+      (click)="updateProfile()"
+    >
+      Update
+    </button>
+    <button
+      *ngIf="!editMode"
+      mat-stroked-button
+      color="warn"
+      type="button"
+      (click)="toggleEdit()"
+    >
+      Cancle Edit
+    </button>
+  </div>
+</form>

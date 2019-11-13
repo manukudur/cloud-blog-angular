@@ -2,10 +2,15 @@
   <mat-icon>done_outline</mat-icon>
 </div>
 <h1 mat-dialog-title>Your account has been successfully created.</h1>
-<p>Now you can create your own Blogs. click Login !</p>
+<p>Now you can create your own Blogs. after Login !</p>
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close routerLink="/">Done</button>
-  <button mat-button mat-dialog-close routerLink="/login" cdkFocusInitial>
+  <button mat-button mat-dialog-close>Done</button>
+  <button
+    mat-stroked-button
+    mat-dialog-close
+    routerLink="/login"
+    cdkFocusInitial
+  >
     Log in
   </button>
 </div>
